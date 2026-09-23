@@ -1,0 +1,35 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Local models and model-hub caches
+huggingface/
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.gguf
+
+# Profiling and benchmark artifacts
+traces/
+*.nsys-rep
+*.sqlite
+*.pt.trace.json
+benchmarks/results/
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

@@ -1,0 +1,75 @@
+[project]
+name = "xixii-vllm"
+version = "0.1.0"
+description = "A learning-oriented, from-scratch Qwen3 inference engine"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "einops>=0.8,<1",
+    "huggingface-hub>=0.23",
+    "numpy>=1.26,<3",
+    "pyyaml>=6,<7",
+    "safetensors>=0.4,<1",
+    "setuptools>=68",
+    "torch==2.13.0",
+    "tqdm>=4.66",
+    "transformers>=4.51,<5",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+    "ruff>=0.12",
+]
+perf = [
+    "flash-attn @ https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.47/flash_attn-2.8.3+cu130torch2.13-cp312-cp312-linux_x86_64.whl",
+    "flashinfer-cubin==0.6.15",
+    "flashinfer-python==0.6.15",
+]
+
+[tool.uv]
+package = false
+default-groups = ["dev"]
+environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+# The FlashInfer cubin wheel does not support HTTP range requests. Supplying its
+# known empty dependency metadata keeps `uv lock` from streaming the large wheel
+# merely to inspect METADATA; installation still downloads and verifies it.
+[[tool.uv.dependency-metadata]]
+name = "flashinfer-cubin"
+version = "0.6.15"
+requires-dist = []
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[[tool.uv.index]]
+name = "flashinfer"
+url = "https://flashinfer.ai/whl"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+flashinfer-python = { index = "flashinfer" }
+flashinfer-cubin = { index = "flashinfer" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "-ra --strict-markers"
+markers = [
+    "gpu: tests that require a CUDA GPU",
+    "weights: tests that require downloaded model weights",
+    "slow: long-running or end-to-end tests",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
