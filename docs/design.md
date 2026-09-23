@@ -3,8 +3,8 @@
 ## 边界
 
 本阶段实现无 KV Cache 的 Qwen3 dense decoder 前向，作为后续缓存和调度优化的数值基线。
-模型规模不写死，由 `Qwen3Config` 决定；仓库当前 `config.json` 实例化后有
-596,049,920 个唯一参数，对应 README 选定的 Qwen3-0.6B 配置。
+模型规模不写死，由 Hugging Face checkpoint 自带的 `Qwen3Config` 决定；默认
+`Qwen/Qwen3-0.6B` 配置实例化后有 596,049,920 个唯一参数。
 
 模块边界如下：
 

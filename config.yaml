@@ -1,0 +1,25 @@
+# 用户运行配置。模型层数、hidden size、attention heads 等结构参数
+# 由 Hugging Face checkpoint 中的 config.json 提供，不在这里重复维护。
+model:
+  # 可以填写 Hugging Face repo id，也可以填写本地模型目录。
+  name_or_path: Qwen/Qwen3-0.6B
+  # 真实实验建议固定为 commit hash；null 表示使用仓库默认 revision。
+  revision: null
+  # null 表示使用 Hugging Face 默认缓存目录。
+  cache_dir: null
+  # 首次下载时必须为 false；完全离线运行时可改为 true。
+  local_files_only: false
+  dtype: bfloat16
+  device: cuda:0
+
+engine:
+  # v0 attention 的开销随序列长度平方增长，先使用保守上限。
+  max_model_len: 2048
+  max_new_tokens: 128
+  seed: 7
+
+sampling:
+  # temperature=0 表示 greedy decoding，此时 top_k/top_p 不参与采样。
+  temperature: 0.9
+  top_k: 50
+  top_p: 0.9

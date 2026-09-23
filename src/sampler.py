@@ -45,7 +45,7 @@ class Sampler(nn.Module):
         params: SamplingParams | None = None,
         *,
         generator: torch.Generator | None = None,
-    ) -> torch.LongTensor:
+    ) -> torch.Tensor:
         params = params or SamplingParams()
         next_token_logits = _select_next_token_logits(logits)
         if not torch.isfinite(next_token_logits).all():
