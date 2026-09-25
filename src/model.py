@@ -1,4 +1,4 @@
-"""Minimal, eager Qwen3 causal language model for the v0 inference baseline."""
+"""用于 v0 推理基线的最小化 eager Qwen3 因果语言模型。"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from layer import (
 
 
 class Qwen3DecoderLayer(nn.Module):
-    """Pre-norm Qwen3 decoder block with two residual connections."""
+    """包含两个残差连接的 pre-norm Qwen3 解码器块。"""
 
     def __init__(self, config: Qwen3Config) -> None:
         super().__init__()
@@ -47,7 +47,7 @@ class Qwen3DecoderLayer(nn.Module):
 
 
 class Qwen3Model(nn.Module):
-    """Token embedding, decoder stack and final normalization."""
+    """Token embedding、解码器堆叠与最终归一化。"""
 
     def __init__(self, config: Qwen3Config) -> None:
         super().__init__()
@@ -78,10 +78,9 @@ class Qwen3Model(nn.Module):
 
 
 class Qwen3ForCausalLM(nn.Module):
-    """Qwen3 decoder plus vocabulary projection.
+    """Qwen3 解码器与词表投影。
 
-    ``forward`` returns logits directly because the inference engine does not
-    need the training-oriented Hugging Face output container.
+    推理引擎不需要面向训练的 Hugging Face 输出容器，因此 ``forward`` 直接返回 logits。
     """
 
     def __init__(self, config: Qwen3Config) -> None:

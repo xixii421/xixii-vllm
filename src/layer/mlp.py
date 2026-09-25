@@ -1,4 +1,4 @@
-"""Feed-forward operators."""
+"""前馈算子。"""
 
 import torch
 import torch.nn.functional as F
@@ -7,7 +7,7 @@ from transformers import Qwen3Config
 
 
 class Qwen3MLP(nn.Module):
-    """Qwen3 SwiGLU feed-forward operator."""
+    """Qwen3 SwiGLU 前馈算子。"""
 
     def __init__(self, config: Qwen3Config) -> None:
         super().__init__()

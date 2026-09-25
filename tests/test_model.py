@@ -43,8 +43,8 @@ def test_logits_match_transformers_reference(
     reference = TransformersQwen3ForCausalLM(config).eval().to(dtype)
     model = Qwen3ForCausalLM(config).eval().to(dtype)
 
-    # Keeping the HF parameter names is part of the checkpoint compatibility
-    # contract, so loading must be strict rather than silently skipping weights.
+    # 保留 HF 参数名是 checkpoint 兼容性约定的一部分，
+    # 因此必须严格加载，不能静默跳过权重。
     model.load_state_dict(reference.state_dict(), strict=True)
     input_ids = torch.tensor([[11, 23, 5, 42], [0, 0, 8, 9]])
     attention_mask = None

@@ -1,4 +1,4 @@
-"""Grouped-query causal attention operators."""
+"""分组查询因果注意力算子。"""
 
 import torch
 import torch.nn.functional as F
@@ -10,7 +10,7 @@ from .rotary import apply_rotary_pos_emb
 
 
 def repeat_kv(hidden_states: torch.Tensor, repeats: int) -> torch.Tensor:
-    """Expand GQA key/value heads from ``H_kv`` to ``H_q``."""
+    """将 GQA key/value heads 从 ``H_kv`` 扩展到 ``H_q``。"""
 
     if repeats == 1:
         return hidden_states
@@ -25,10 +25,10 @@ def prepare_causal_attention_mask(
     hidden_states: torch.Tensor,
     attention_mask: torch.Tensor | None,
 ) -> torch.Tensor:
-    """Build an additive causal mask shaped ``[B, 1, S, S]``.
+    """构造 shape 为 ``[B, 1, S, S]`` 的加法因果 mask。
 
-    A 2-D mask follows the tokenizer convention (one means a real token, zero
-    means padding). A 4-D mask is treated as an already prepared additive mask.
+    2-D mask 遵循 tokenizer 约定（1 表示真实 token，0 表示 padding）。
+    4-D mask 视为已准备好的加法 mask。
     """
 
     batch_size, seq_len, _ = hidden_states.shape
@@ -61,7 +61,7 @@ def prepare_causal_attention_mask(
 
 
 class Qwen3Attention(nn.Module):
-    """Qwen3 grouped-query causal self-attention."""
+    """Qwen3 分组查询因果自注意力。"""
 
     def __init__(self, config: Qwen3Config) -> None:
         super().__init__()
@@ -107,7 +107,7 @@ class Qwen3Attention(nn.Module):
     ) -> torch.Tensor:
         batch_size, seq_len, _ = hidden_states.shape
 
-        # [B, S, H*D] -> [B, H, S, D]
+        # 转换 shape：[B, S, H*D] -> [B, H, S, D]
         query = self.q_proj(hidden_states).view(
             batch_size, seq_len, self.num_attention_heads, self.head_dim
         )

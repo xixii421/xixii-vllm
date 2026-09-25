@@ -1,11 +1,11 @@
-"""Normalization operators."""
+"""归一化算子。"""
 
 import torch
 from torch import nn
 
 
 class RMSNorm(nn.Module):
-    """Root-mean-square normalization used by Qwen3."""
+    """Qwen3 使用的均方根归一化。"""
 
     def __init__(self, hidden_size: int, eps: float = 1e-6) -> None:
         super().__init__()

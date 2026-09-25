@@ -34,9 +34,8 @@ environments = [
     "sys_platform == 'linux' and platform_machine == 'x86_64'",
 ]
 
-# The FlashInfer cubin wheel does not support HTTP range requests. Supplying its
-# known empty dependency metadata keeps `uv lock` from streaming the large wheel
-# merely to inspect METADATA; installation still downloads and verifies it.
+# FlashInfer cubin wheel 不支持 HTTP 范围请求。显式提供其已知为空的依赖元数据，
+# 可避免 `uv lock` 仅为检查 METADATA 就流式读取整个大型 wheel；安装时仍会下载并校验它。
 [[tool.uv.dependency-metadata]]
 name = "flashinfer-cubin"
 version = "0.6.15"

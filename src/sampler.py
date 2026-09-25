@@ -1,4 +1,4 @@
-"""Token sampling for the eager v0 generation path."""
+"""eager v0 生成路径的 token 采样。"""
 
 from __future__ import annotations
 
@@ -11,10 +11,9 @@ from torch import nn
 
 @dataclass(frozen=True, slots=True)
 class SamplingParams:
-    """Parameters shared by one sampling batch.
+    """一个采样批次共享的参数。
 
-    ``temperature=0`` selects greedy decoding. ``top_k=0`` and ``top_p=1``
-    disable their respective filters.
+    ``temperature=0`` 表示贪心解码。``top_k=0`` 和 ``top_p=1`` 分别禁用对应的过滤器。
     """
 
     temperature: float = 1.0
@@ -31,11 +30,10 @@ class SamplingParams:
 
 
 class Sampler(nn.Module):
-    """Select one next-token id per batch row from model logits.
+    """从模型 logits 中为每个批次行选择一个下一 token id。
 
-    The preferred input shape is ``[B, V]``. For convenience, logits shaped
-    ``[B, S, V]`` are also accepted and only the last sequence position is
-    sampled. Sampling is performed in fp32 for fp16/bf16 logits.
+    首选输入 shape 为 ``[B, V]``。为便于使用，也接受 shape 为 ``[B, S, V]`` 的
+    logits，并仅采样序列的最后一个位置。对 fp16/bf16 logits 使用 fp32 执行采样。
     """
 
     @torch.no_grad()
@@ -93,8 +91,8 @@ def _apply_top_p(scores: torch.Tensor, top_p: float) -> torch.Tensor:
     sorted_scores, sorted_indices = torch.sort(scores, dim=-1, descending=True)
     cumulative_probabilities = torch.softmax(sorted_scores, dim=-1).cumsum(dim=-1)
 
-    # Shift the mask so the first token crossing top_p remains eligible. This
-    # keeps the smallest high-probability prefix whose mass reaches top_p.
+    # 右移 mask，使累计概率首次超过 top_p 的 token 仍可被选中。
+    # 这样会保留累计概率达到 top_p 的最短高概率前缀。
     sorted_remove = cumulative_probabilities > top_p
     sorted_remove[..., 1:] = sorted_remove[..., :-1].clone()
     sorted_remove[..., 0] = False

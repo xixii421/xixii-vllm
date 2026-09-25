@@ -1,4 +1,4 @@
-"""Rotary position embedding operators."""
+"""旋转位置编码算子。"""
 
 import torch
 from torch import nn
@@ -6,7 +6,7 @@ from transformers import Qwen3Config
 
 
 class RotaryEmbedding(nn.Module):
-    """Default (non-scaled) rotary position embedding for Qwen3."""
+    """Qwen3 默认的未缩放旋转位置编码。"""
 
     def __init__(self, config: Qwen3Config) -> None:
         super().__init__()
@@ -31,7 +31,7 @@ class RotaryEmbedding(nn.Module):
         if position_ids is None:
             seq_len = hidden_states.shape[1]
             position_ids = torch.arange(seq_len, device=hidden_states.device)[None, :]
-        # inv_freq: [D/2], position_ids: [B, S] -> freqs: [B, S, D/2]
+        # shape 变换：inv_freq: [D/2], position_ids: [B, S] -> freqs: [B, S, D/2]
         inv_freq = self.inv_freq[None, :, None].expand(position_ids.shape[0], -1, 1)
         positions = position_ids[:, None, :].float()
         device_type = hidden_states.device.type
@@ -56,7 +56,7 @@ def apply_rotary_pos_emb(
     cos: torch.Tensor,
     sin: torch.Tensor,
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    """Apply RoPE to tensors shaped ``[B, H, S, D]``."""
+    """对 shape 为 ``[B, H, S, D]`` 的张量应用 RoPE。"""
 
     cos = cos.unsqueeze(1)
     sin = sin.unsqueeze(1)

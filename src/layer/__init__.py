@@ -1,4 +1,4 @@
-"""Public Qwen3 inference operators."""
+"""对外公开的 Qwen3 推理算子。"""
 
 from .attention import Qwen3Attention, prepare_causal_attention_mask, repeat_kv
 from .mlp import Qwen3MLP
